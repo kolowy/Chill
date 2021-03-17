@@ -1,6 +1,6 @@
 ![Cʜɪʟʟ logo](https://cdn.discordapp.com/app-icons/752812712165376083/485c9fdaf0aaf940fd0fd9d005692723.png "Cʜɪʟʟ logo")
 # Cʜɪʟʟ 
-Un robot polyvalent, grandement inspiré de GuideBot (Idiot's Guide Communauté).
+Un robot polyvalent ! Une équipe avec 3 codeurs, amitié et travail hardu son les maîtres mots !
 
 ## Créateurs
 
