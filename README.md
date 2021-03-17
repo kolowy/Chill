@@ -1,2 +1,1 @@
-# CobraMaster
-Cobra Bot
+# Cobra
