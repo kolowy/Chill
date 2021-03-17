@@ -1,4 +1,4 @@
-![Cʜɪʟʟ logo](https://cdn.discordapp.com/attachments/707987149013778484/821827549935042560/logo_tg.jpg "Cʜɪʟʟ logo")
+![Cʜɪʟʟ logo](https://cdn.discordapp.com/attachments/707987149013778484/821827549935042560/logo_tg.jpg "Cʜɪʟʟ logo") ![Cʜɪʟʟ logo vert](https://cdn.discordapp.com/attachments/707987149013778484/821827780672618556/logo_tg_green.jpg "Cʜɪʟʟ logo Green") 
 # Cʜɪʟʟ 
 Un robot polyvalent ! Une équipe avec 3 codeurs, amitié et travail hardu son les maîtres mots !
 
