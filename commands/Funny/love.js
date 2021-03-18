@@ -1,5 +1,3 @@
-const { MessageEmbed, RichEmbed } = require('discord.js');
-
 module.exports.run = (client, message, args) => {
     var mentionned = message.mentions.users.first();
     const author = message.author;
@@ -37,19 +35,7 @@ module.exports.run = (client, message, args) => {
         text = "pour la vie";
     }
     userMention = "<@" + mentionned.id + ">";
-    message.channel.send(
-        author.username +
-        " vous " +
-        ylove +
-        "aimez " +
-        text +
-        " " +
-        userMention +
-        " à " +
-        loveP +
-        "% " +
-        emoji
-    );
+    message.channel.send(author.username + " vous " + ylove + "aimez " + text + " " + userMention + " à " + loveP + "% " + emoji);
 };
 
 module.exports.help = {
