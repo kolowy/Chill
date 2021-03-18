@@ -5,25 +5,21 @@ const color = "PINK"
 
 module.exports.run = async (bot, message, args) => {
 
-  message.delete({ timeout: 1000 });
-
   const name = args.join(" ");
 
   if (!name) {
-
-  const embed = new MessageEmbed()
-    .setColor(color)
-    .setTitle("__Erreur__", message.guild.iconURL)
-    .setDescription(" ")
-    .addField("Raison:", "Veuillez préciser le paramètre\n[user] s'il vous plaît !")
-    .setFooter("Page d'info", "https://images.emojiterra.com/google/android-11/128px/2139.png")
-    .setTimestamp();
-
-  message.channel.send(embed);
-
+    const embed = new MessageEmbed()
+      .setColor(color)
+      .setTitle("__Erreur__", message.guild.iconURL)
+      .setDescription(" ")
+      .addField("Raison:", "Veuillez préciser le paramètre\n[user] s'il vous plaît !")
+      .setFooter("Page d'info", "https://images.emojiterra.com/google/android-11/128px/2139.png")
+      .setTimestamp();
+    message.channel.send(embed);
+    return
   }
 
-  const url = `https://www.instagram.com/paul__dfr/?__a=1`;
+  const url = `https://www.instagram.com/${name}/?__a=1`;
 
   try {
     res = await fetch(url).then(url => url.json());
@@ -38,9 +34,8 @@ module.exports.run = async (bot, message, args) => {
     .setTimestamp();
 
     message.channel.send(embed);
+    return
   }
-  console.log(res)
-
   const account = res.graphql.user;
 
   const embed = new MessageEmbed()
