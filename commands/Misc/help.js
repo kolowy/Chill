@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js")
 const fs = require("fs");
 let categoryList = fs.readdirSync("./commands");
 const categoryHelp = require('../../util/categoryHelp.json');
-const color = "RANDOM";
+const color = "BLUE";
 const ADMIN = process.env.ADMIN.split(',');
 const { logManager } = require("../../log/index.js");
 
@@ -61,7 +61,6 @@ module.exports.run = (client, message, args) => {
     if (command.help.aliases.length > 0){
       embed.addField("Alias", `${command.help.aliases.join(', ')}`, true);
     }
-    console.log(command.help.category)
     if((command.help.category == "fondateur")&& (notAccess==false)){
       return message.author.send(embed);
     } else {
