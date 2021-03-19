@@ -3,9 +3,10 @@ const ADMIN = process.env.ADMIN.split(',');
 const color = "RANDOM";
 
 module.exports.run = (client, message, args) => {
-  message.delete({ timeout: 1000 });
+  message.delete().catch((error) => {
+    message.channel.send('I cannot delete message here')
+  });
 
-//Définition de l'accès fermé
   let notAccess=true;
   for (let i = 0; i < ADMIN.length; i++) {
       if(ADMIN[i]==message.author.id){
