@@ -4,11 +4,12 @@ let categoryList = fs.readdirSync("./commands");
 const categoryHelp = require('../../util/categoryHelp.json');
 const color = "BLUE";
 const ADMIN = process.env.ADMIN.split(',');
-const { logManager } = require("../../log/index.js");
 
 
 module.exports.run = (client, message, args) => {
-  message.delete({ timeout: 1000 });
+  message.delete({ timeout: 1000 }).catch((error) => {
+    message.channel.send('I cannot delete message here')
+  });
   let notAccess=true;
   //ANCHOR si admin, alors help avec fondateur (en pv)
     for (let i = 0; i < ADMIN.length; i++) {
@@ -61,6 +62,7 @@ module.exports.run = (client, message, args) => {
     if (command.help.aliases.length > 0){
       embed.addField("Alias", `${command.help.aliases.join(', ')}`, true);
     }
+    console.log(command.help.category)
     if((command.help.category == "fondateur")&& (notAccess==false)){
       return message.author.send(embed);
     } else {
