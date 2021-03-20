@@ -22,7 +22,7 @@ async function execute(message, serverQueue) {
         "Je n'ai pas les permissions necessaires pour parler ou pour me connecter"
       );
     }
-    apikey = "AIzaSyDRj96JsNyvLdlqrXgqbn6E92L6-PoXiHQ"
+    apikey = process.env.YOUTUBE
     url = "https://youtube.googleapis.com/youtube/v3/search?maxResults=5&q=" + args + "&key=" + apikey;
     var connection = await voiceChannel.join();
 
