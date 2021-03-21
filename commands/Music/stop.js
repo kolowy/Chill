@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
   name: "stop",
   aliases: ["stope"],
-  category: "misc",
+  category: "music",
   description: "Stoppe la musique.",
   cooldown: 10,
   usage: "",
