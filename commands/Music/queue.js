@@ -14,7 +14,7 @@ module.exports.run = async(client, message, args) => {
 module.exports.help = {
     name: "queue",
     aliases: ["serveurqueue", "queu", "servqueue"],
-    category: "misc",
+    category: "music",
     description: "Voir toutes les musiques.",
     cooldown: 10,
     usage: "",
