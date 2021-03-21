@@ -3,6 +3,8 @@ const Discord = require("discord.js");
 const ytdl = require('ytdl-core-discord');
 const client = new Discord.Client();
 const youtube = require('request');
+const { MessageEmbed} = require("discord.js");
+const lyricsFinder = require("lyrics-finder");
 
 
 async function play(guild, song, message) {
@@ -12,7 +14,7 @@ async function play(guild, song, message) {
       queue.delete(guild.id)
       return;
     }
-    const dispatcher = serverQueue.connection.play(await ytdl(song.url), { type: 'opus', filter : 'audioonly' , highWaterMark: 50 }).on('debug', console.log)
+    dispatcher = serverQueue.connection.play(await ytdl(song.url), { type: 'opus', filter : 'audioonly' , highWaterMark: 50 }).on('debug', console.log)
 
       .on("finish", () => {
         serverQueue.songs.shift();
@@ -21,7 +23,18 @@ async function play(guild, song, message) {
       .on("error", error => console.error(error));
 
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    serverQueue.textChannel.send(`Play: **${song.url}**`);
+    var t = song.duration
+    var s = Math.floor(t) % 60;
+    var m = Math.floor(t / 60) % 60;
+    var chaine = m+"m "+s + "s";
+    const embed = new MessageEmbed()
+        .setColor("#FF0000")
+        .setTitle('Play : ' + song.title)
+        .setDescription(song.description)
+	.setThumbnail(song.thumbail)
+        .setURL(song.url)
+        .setFooter('Duration : ' + chaine)
+    serverQueue.textChannel.send(embed)
 };
 
 module.exports = {
@@ -50,14 +63,111 @@ module.exports = {
             }
         } else {
             serverQueue.songs.push(song);
-            return message.channel.send(`**${song.url}** is playing`);
+            const embed = new MessageEmbed()
+                .setColor("#FF0000")
+                .setTitle('Next Play : ' + song.title)
+                .setDescription(song.description)
+                .setThumbnail(song.thumbail)
+                .setURL(song.url)
+            return message.channel.send(embed).catch(console.error);
         }
     },
 
     skip: function skip(message){
         const serverQueue = queue.get(message.guild.id);
-        if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !")}
+        if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
         serverQueue.songs.shift();
         play(message.guild, serverQueue.songs[0]);
-    }
+        const embed = new MessageEmbed()
+            .setColor("#FF0000")
+            .setTitle('Skipped')
+	 return message.channel.send(embed).catch(console.error);
+    },
+    pause: function pause(message){
+        const serverQueue = queue.get(message.guild.id);
+        if (!serverQueue){return message.channel.send("Pause...\n `.resume` pour remettre la musique !").catch(console.error);}
+        dispatcher.pause(true)
+        const embed = new MessageEmbed()
+            .setColor("#FF0000")
+            .setTitle('Pause...')
+            .setDescription('**`.resume`** pour avoir vos musiques de nouveau :P')
+	    return message.channel.send(embed).catch(console.error);
+    },
+    resume: function resume(message){
+        const serverQueue = queue.get(message.guild.id);
+        if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
+        dispatcher.resume(true)
+        const embed = new MessageEmbed()
+            .setColor("#FF0000")
+            .setTitle('**Resumed !**')
+	return message.channel.send(embed).catch(console.error);
+    },
+    stop: function stop(message){
+        const serverQueue = queue.get(message.guild.id);
+        if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
+        dispatcher.stop()
+        const embed = new MessageEmbed()
+            .setColor("#FF0000")
+            .setTitle('Stop !')
+        return message.channel.send(embed).catch(console.error);
+    },
+    serverQueue: function serverQueue(message){
+        const serverQueue = queue.get(message.guild.id);
+        if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
+        const embed = new MessageEmbed()
+            .setColor("#FF0000")
+            .setTitle('Serveur Queue')
+            .setDescription(`**Playlist:** 
+            ➔ ${serverQueue.songs.map(song => `${song.title}`).join("\n ➔ ")}
+
+             ___________
+
+            **Musique actuelle:** ${serverQueue.songs[0].title}`)
+        return message.channel.send(embed).catch(console.error);
+    },
+    np: function np(message){
+        const serverQueue = queue.get(message.guild.id);
+        if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
+	var t = serverQueue.songs[0].duration
+	var s = Math.floor(t) % 60;
+	var m = Math.floor(t / 60) % 60;
+	var chaine = m+"m "+s + "s";
+        const embed = new MessageEmbed()
+        .setColor("#FF0000")
+        .setTitle('Play : ' + serverQueue.songs[0].title)
+        .setDescription(serverQueue.songs[0].description)
+	.setThumbnail(serverQueue.songs[0].thumbail)
+        .setURL(serverQueue.songs[0].url)
+        .setFooter('Duration : ' + chaine)
+        return message.channel.send(embed).catch(console.error);
+    },
+    volume: function volume(message, args){
+        const serverQueue = queue.get(message.guild.id);
+        if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
+	serverQueue.connection.dispatcher.setVolumeLogarithmic(args[0] / 100)
+        const embed = new MessageEmbed()
+        .setColor("#FF0000")
+        .setTitle('Volume : ' + args[0])
+        return message.channel.send(embed).catch(console.error);
+    },
+    lyrics: function lyrics(message, args){
+        const serverQueue = queue.get(message.guild.id);
+        if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
+        let lyrics = " "
+        try {
+            lyrics = await lyricsFinder(serverQueue.songs[0].title, "");
+            if (!lyrics) lyrics = "No lyrics found";
+        } catch (error) {
+            lyrics = "No lyrics found"
+        }
+        let lyricsEmbed = new MessageEmbed()
+            .setTitle(i18n.__mf("lyrics.embedTitle", { title: serverQueue.songs[0].title }))
+            .setDescription(lyrics)
+            .setColor("#F8AA2A")
+            .setTimestamp();
+
+        if (lyricsEmbed.description.length >= 2048)
+            lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
+        return message.channel.send(lyricsEmbed).catch(console.error);
+    },
 }
