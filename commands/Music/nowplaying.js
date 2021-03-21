@@ -22,7 +22,7 @@ module.exports.run = async(client, message, args) => {
 module.exports.help = {
     name: "nowplay",
     aliases: ["np"],
-    category: "misc",
+    category: "music",
     description: "Vous donne des infos sur votre musique.",
     cooldown: 10,
     usage: "",
