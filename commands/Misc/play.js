@@ -4,14 +4,13 @@ const client = new Discord.Client();
 const youtube = require('request');
 const { Queue } = require("../../util/musique.js");
 
-
 module.exports.run = async(client, message, args) => {        
     execute(message);
     return;
 };
 
-
 async function execute(message) {
+    //NOTE perms
     args = message.content.substring(message.content.indexOf(" ") + 1, message.content.length)
     const voiceChannel = message.member.voice.channel;
     if (!voiceChannel)
@@ -31,14 +30,22 @@ async function execute(message) {
         n = 0
         while(res.items[n].id.videoId ==  undefined){
             n=n+1
-            console.log(n)
         }
+        //NOTE video trouvé -> play + description
         kolo = res.items[n].id.videoId;
+        getinfo = getytdl('https://www.youtube.com/watch?v=' + kolo)
         const song = {
             url: 'https://www.youtube.com/watch?v=' + kolo,
+            title: getinfo.title,
+            description: getinfo.description,
         };
         Queue(message, song, connection)
     });
+}
+async function getytdl(){
+    //NOTE avoir les infos sur la vidéo
+    var getinfo = await ytdl.getBasicInfo(url2);
+    return(getinfo)
 }
 
 module.exports.help = {
