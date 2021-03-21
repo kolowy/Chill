@@ -55,7 +55,7 @@ async function getytdl(url){
 module.exports.help = {
     name: "play",
     aliases: ["p", "pl"],
-    category: "Misc",
+    category: "music",
     description: "Permet de jouer de la musique.",
     cooldown: 10,
     usage: "<titre>",
