@@ -22,7 +22,7 @@ module.exports.run = async(client, message, args) => {
 module.exports.help = {
     name: "resume",
     aliases: ["resum"],
-    category: "misc",
+    category: "music",
     description: "Remet la musique en route.",
     cooldown: 10,
     usage: "<votre_message>",
