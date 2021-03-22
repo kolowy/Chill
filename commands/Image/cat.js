@@ -3,8 +3,6 @@ const fetch = require("node-fetch");
 const color = "PURPLE";
 
 module.exports.run = async (client, message, args) => {
-  message.delete({ timeout: 1000 });
-
   const cat = await fetch("http://aws.random.cat/meow")
     .then(res => res.json())
     .then(json => json.file);
