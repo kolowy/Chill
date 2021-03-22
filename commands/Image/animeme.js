@@ -7,20 +7,18 @@ function getRandomInt(max) {
 }
 
 module.exports.run = async (client, message, args) => {
-	message.delete({ timeout: 1000 });
-
 	const anime = await fetch("https://www.reddit.com/user/emdix/m/animemes/top/.json?sort=top&t=day&limit=500")
-    .then(res => res.json())
-    .then(json => json.data.children);
+	    .then(res => res.json())
+	    .then(json => json.data.children);
 	const img = anime[getRandomInt(anime.length)].data;
   
-  const embed = new MessageEmbed()
+	const embed = new MessageEmbed()
 		.setColor(color)
-    .setDescription(img.title)
-    .setImage(img.url)
-    .setTimestamp()
-    .setFooter("Extract to r/animemes");
-  message.channel.send(embed);
+	.setDescription(img.title)
+	.setImage(img.url)
+	.setTimestamp()
+	.setFooter("Extract to r/animemes");
+	message.channel.send(embed);
 };
 
 module.exports.help = {
