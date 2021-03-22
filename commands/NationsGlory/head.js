@@ -2,7 +2,9 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports.run = async(client, message, args) => {
 
-  message.delete({ timeout: 1000 });
+  message.delete({ timeout: 1000 }).catch((error) => {
+        message.channel.send('I cannot delete message here')
+});
 
   var taille = args[1]
   if(!taille) {
