@@ -1,9 +1,6 @@
 const { MessageEmbed} = require("discord.js");
 
 module.exports.run = (client, message, args) => {
-	message.delete({ timeout: 1000 });
-
-
   const mentionned = message.mentions.users.first();
 
   if (mentionned) {
