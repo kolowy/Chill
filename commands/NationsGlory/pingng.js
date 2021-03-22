@@ -3,7 +3,9 @@ const request  = require('request');
 const color = "RED";
 
 module.exports.run = (client, message, args) => {
-  message.delete({ timeout: 1000 });
+  message.delete({ timeout: 1000 }).catch((error) => {
+        message.channel.send('I cannot delete message here')
+});
 
   request('https://apiv2.nationsglory.fr/launcher/get_players', function (error, response, body) {
     const embed = new MessageEmbed()
