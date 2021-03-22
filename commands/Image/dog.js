@@ -3,8 +3,6 @@ const fetch = require("node-fetch");
 const color = "PURPLE";
 
 module.exports.run = async (client, message, args) => {
-  message.delete({ timeout: 1000 });
-
   const dog = await fetch("https://dog.ceo/api/breeds/image/random")
     .then(res => res.json())
     .then(json => json.message);
