@@ -5,8 +5,6 @@ const categoryHelp = require('../../util/categoryHelp.json');
 function strUpperFirst(region){return (region+'').charAt(0).toUpperCase()+region.substr(1);}
 
 module.exports.run = async (client, message, args) => {
-	message.delete({ timeout: 1000 });
-
   let countServer=0;
   client.guilds.cache.forEach(() => {
     countServer++;
