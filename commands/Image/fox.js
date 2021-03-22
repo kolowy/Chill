@@ -3,8 +3,6 @@ const fetch = require("node-fetch");
 const color = "PURPLE";
 
 module.exports.run = async (client, message, args) => {
-  message.delete({ timeout: 1000 });
-
   const fox = await fetch("https://randomfox.ca/floof")
     .then(res => res.json())
     .then(json => json.image);
