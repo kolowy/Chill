@@ -1,8 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports.run = async(client, message) => {
-	message.delete({ timeout: 1000 });
-
   linkId = client.user.id
   linkAvatar = client.user.avatar
   avatar = "https://cdn.discordapp.com/avatars/"+linkId+"/"+linkAvatar+".png"
