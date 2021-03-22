@@ -37,6 +37,17 @@ async function play(guild, song, message) {
     serverQueue.textChannel.send(embed)
 };
 
+async function lyric(serverQueue){
+	let lyric = " "
+	try {
+	    lyrics = await lyricsFinder(serverQueue.songs[0].title, "");
+	    if (!lyrics) lyrics = "No lyrics found";
+	} catch (error) {
+	    lyrics = "No lyrics found"
+        }
+	return lyrics
+}
+
 module.exports = {
     Queue: function Queue(message, song, connection) {
         const voiceChannel = message.member.voice.channel;
@@ -150,24 +161,19 @@ module.exports = {
         .setTitle('Volume : ' + args[0])
         return message.channel.send(embed).catch(console.error);
     },
-    lyrics: function lyrics(message, args){
+    lyrics: function lyrics(message){
         const serverQueue = queue.get(message.guild.id);
         if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
-        let lyrics = " "
-        try {
-            lyrics = await lyricsFinder(serverQueue.songs[0].title, "");
-            if (!lyrics) lyrics = "No lyrics found";
-        } catch (error) {
-            lyrics = "No lyrics found"
-        }
-        let lyricsEmbed = new MessageEmbed()
-            .setTitle(i18n.__mf("lyrics.embedTitle", { title: serverQueue.songs[0].title }))
-            .setDescription(lyrics)
-            .setColor("#F8AA2A")
-            .setTimestamp();
+        lyric(serverQueue).then(lyric => {
+		let lyricsEmbed = new MessageEmbed()
+		    .setTitle('title:' + serverQueue.songs[0].title)
+		    .setDescription(lyric)
+		    .setColor("#F8AA2A")
+		    .setTimestamp();
 
-        if (lyricsEmbed.description.length >= 2048)
-            lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
-        return message.channel.send(lyricsEmbed).catch(console.error);
+		if (lyricsEmbed.description.length >= 2048)
+		    lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
+		return message.channel.send(lyricsEmbed).catch(console.error);
+	})
     },
 }
