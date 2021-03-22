@@ -1,8 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports.run = (client, message, args) => {
-	message.delete({ timeout: 1000 });
-
   const guild = client.guilds.cache.get(args[0]);
 
   if (guild) {
