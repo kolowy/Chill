@@ -65,4 +65,5 @@ client.api.applications(client.user.id).guilds('752812593961369641').commands.po
                     }
                 })
             }
+    });
 };
