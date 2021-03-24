@@ -5,7 +5,7 @@ module.exports.run = (client, message, args) => {
     .setColor("YELLOW")
     .setAuthor(client.user.username)
     .setTitle("__Pour ajouter le bot à votre serveur__ :")
-    .setDescription("[inviter le bot sur votre serveur !](https://discord.com/oauth2/authorize?client_id=816294305194573834&permissions=8&scope=bot)\n \n[Rejoindre notre serveur !](https://discord.gg/HuwK62QcFB)\n")
+    .setDescription("[inviter le bot sur votre serveur !](https://discord.com/api/oauth2/authorize?client_id=752812712165376083&permissions=8&scope=applications.commands%20bot)\n \n[Rejoindre notre serveur !](https://discord.gg/c4RvJUCBEW)\n")
     .setFooter("Invite", "https://images.emojiterra.com/google/android-11/128px/2795.png")
     .setTimestamp();
   message.channel.send(embed)
