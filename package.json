@@ -1,7 +1,7 @@
 {
   "name": "cobra",
   "version": "2.0.1",
-  "description": "A game on a discord bot",
+  "description": "A discord bot",
   "main": "build/index.js",
   "scripts": {
     "build": "tsc"
@@ -29,7 +29,7 @@
     "fs": "0.0.1-security",
     "lyrics-finder": "^21.7.0",
     "moment": "^2.29.1",
-    "mongoose": "^5.12.0",
+    "mongoose": "^5.12.2",
     "node-fetch": "^2.6.1",
     "opusscript": "0.0.8",
     "random-puppy": "^1.1.0",

@@ -3,6 +3,7 @@ const ytdl = require('ytdl-core-discord');
 const client = new Discord.Client();
 const youtube = require('request');
 const { Queue } = require("../../util/musique.js");
+const { MessageEmbed} = require("discord.js");
 
 module.exports.run = async(client, message, args) => {        
     execute(message);
@@ -28,7 +29,14 @@ async function execute(message) {
     youtube(url, { json: true }, (err, body, res) => {
         if (err) { return console.log(err); }
         n = 0
-        console.log(res)
+        if(res.pageInfo.totalResults == 0){
+		const embed = new MessageEmbed()
+		.setColor("#FF0000")
+		.setTitle('Aucune video trouvée')
+	    message.channel.send(embed)
+		return
+	}
+	
         while(res.items[n].id.videoId ==  undefined){
             n=n+1
             console.log(n)

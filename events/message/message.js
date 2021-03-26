@@ -15,12 +15,12 @@ module.exports = async(client, message) => {
         }
     }
     if (message.author.bot) return;
-    try {
+    /*try {
         guildDB = await client.data.getGuildDB(message.member.guild.id);
         myPrefix = (!guildDB.prefix) ? client.config.PREFIX : guildDB.prefix;
     } catch (e) {
         console.log(e);
-    }
+    }*/
     //Messages privés, renvoit à l'event directMessage
     if (message.channel.type === "dm") {
         if (notAccess == true) {
@@ -30,7 +30,7 @@ module.exports = async(client, message) => {
 
 
     //Prefix et arguments
-
+	const myPrefix = "."
     const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
     if (message.content.match(prefixMention)) {
         return message.channel.send(`${message.author} - Mon préfix est \`${myPrefix}\` !`);

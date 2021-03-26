@@ -39,9 +39,9 @@ var context = {
     pkg: packageLoader_1.pkg
 };
 
-
+logManager('connect db',1);
 //Connect to mongoose database
-mongoose.connect("mongodb://localhost:27017/Chill", {
+/*mongoose.connect("mongodb://localhost:27017/Chill", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -49,9 +49,9 @@ mongoose.connect("mongodb://localhost:27017/Chill", {
     console.log("Connected to the Mongodb database.", "log");
 }).catch((err) => {
     //If it doesn't connect log the following
-    console.log("Unable to connect to the Mongodb database. Error:" + err, "error");
+    console.log("Unable to connect to the Mongaodb database. Error:" + err, "error");
 });
-context.client.data = require("./db/queries");
+context.client.data = require("./db/queries");*/
 
 //NOTE on ready
 context.client.on("ready", function() {

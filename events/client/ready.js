@@ -26,44 +26,43 @@ module.exports = async (client, message, member) => {
         { name: "Status", value: `${status}`, inline: true },
         { name: "Date", value: `${moment(client.user.onAt).utcOffset('+0100').format("DD/MM/YYYY à HH:mm")}`, inline: true },
         );
-
-client.api.applications(client.user.id).guilds('752812593961369641').commands.post({
-            data: {
-                name: "hello",
-                description: "hello world command"
-            },
+    client.api.applications(client.user.id).guilds('752812593961369641').commands.post({
         data: {
-                name: "chill",
-                description: "lien d'invitation"
-            }
-        });
-    
-    
-        client.ws.on('INTERACTION_CREATE', async interaction => {
-            const command = interaction.data.name.toLowerCase();
-            const args = interaction.data.options;
-    
-            if (command === 'hello'){ 
-                // here you could do anything. in this sample
-                // i reply with an api interaction
-                client.api.interactions(interaction.id, interaction.token).callback.post({
-                    data: {
-                        type: 4,
-                        data: {
-                            content: "hello world!!!"
-                        }
-                    }
-                })
-            }
-        if (command === 'chill'){ 
-                client.api.interactions(interaction.id, interaction.token).callback.post({
-                    data: {
-                        type: 4,
-                        data: {
-                            content: "[inviter le bot sur votre serveur !](https://discord.com/api/oauth2/authorize?client_id=752812712165376083&permissions=8&scope=applications.commands%20bot)\n \n[Rejoindre notre serveur !](https://discord.gg/c4RvJUCBEW)\n"
-                        }
-                    }
-                })
-            }
+            name: "ping",
+            description: "ping le bot"
+        },
+    data: {
+            name: "chill",
+            description: "lien d'invitation"
+        }
     });
+
+
+    client.ws.on('INTERACTION_CREATE', async interaction => {
+        const command = interaction.data.name.toLowerCase();
+        const args = interaction.data.options;
+
+        if (command === 'ping'){ 
+            // here you could do anything. in this sample
+            // i reply with an api interaction
+            client.api.interactions(interaction.id, interaction.token).callback.post({
+                data: {
+                    type: 4,
+                    data: {
+                        content: 'Latence du BOT : '+ Math.round(client.ws.ping) + ' ms'
+                    }
+                }
+            })
+        }
+        if (command === 'chill'){ 
+            client.api.interactions(interaction.id, interaction.token).callback.post({
+                data: {
+                    type: 4,
+                    data: {
+                        content: "[inviter le bot sur votre serveur !](https://discord.com/api/oauth2/authorize?client_id=752812712165376083&permissions=8&scope=applications.commands%20bot)\n \n[Rejoindre notre serveur !](https://discord.gg/c4RvJUCBEW)\n"
+                    }
+                }
+            })
+        }
+    })
 };
