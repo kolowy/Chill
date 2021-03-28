@@ -36,6 +36,17 @@ module.exports = async (client, message, member) => {
             description: "lien d'invitation"
         }
     });
+	client.api.applications(client.user.id).guilds('813708731673346048').commands.post({
+        data: {
+            name: "ping",
+            description: "ping le bot"
+        },
+    data: {
+            name: "chill",
+            description: "lien d'invitation"
+        }
+    });
+
 
 
     client.ws.on('INTERACTION_CREATE', async interaction => {
