@@ -1,36 +1,36 @@
-const { MessageEmbed } = require('discord.js')
-const color = "5AAAF6";
+const Discord = require("discord.js");
+const ytdl = require('ytdl-core-discord');
+const client = new Discord.Client();
+const youtube = require('request');
+const { radio } = require("../../util/musique.js");
 
 module.exports.run = (client, message, args) => {
-
-  if (message.member.voice.channel) {
-    try {
-      const voiceChannel = message.member.voice.channel
-      voiceChannel.join().then(connection => {
-        connection.play('https://radio.nationsglory.fr:8000/ngradio', { volume: 0.25});
-                return;
-      });
-
-    } catch {
-      message.reply(':x: Error :x:').then(msg => { 
-      msg.delete({ timeout: 15000 })})
-      return;
-    }
-  } else {
-     client.channels.cache.get(client.config.cmdChannel).send(`${message.author} - Tu dois être dans le salon vocal '**🎧】Ecoute de la Radio**' pour lancer la radio !`).then(msg => { 
-      msg.delete({ timeout: 7000 })})
-      return
-  };
-    
- const radio = new MessageEmbed()
-    .setAuthor(message.author.username, message.author.avatarURL(), message.author.avatarURL())
-    .setTitle('Bonne écoute ! 📻')
-    .setColor("#0474dc")
-    .setDescription("Vous avez lancé la radio de NationsGlory !")
-    .setFooter("Extract to NG Radio © ", 'https://static.nationsglory.fr/N24y2366y4.png')
-
-  message.channel.send(radio)
+  execute(message);
+  return;
 };
+
+async function execute(message) {
+  //NOTE perms
+  const voiceChannel = message.member.voice.channel;
+  if (!voiceChannel)
+    return message.channel.send("Vous n'etes pas dans un channel vocal");
+  const permissions = voiceChannel.permissionsFor(message.client.user);
+  if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
+    return message.channel.send(
+      "Je n'ai pas les permissions necessaires pour parler ou pour me connecter"
+    );
+  }
+  var connection = await voiceChannel.join();
+
+  const song = {
+      url: 'https://radio.nationsglory.fr:8000/ngradio',
+      title: 'Radio NG',
+      description: 'ng radio',
+      duration: 00
+  };
+  radio(message, song, connection)
+}
+
 
 module.exports.help = {
   name: "radio",
