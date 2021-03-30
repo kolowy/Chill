@@ -31,7 +31,7 @@
   const canvas = Canvas.createCanvas(700, 250);
   const ctx = canvas.getContext('2d');
 
-  const background = await Canvas.loadImage('./assets/fonts/Iwallpaper.jpg');
+  const background = Canvas.loadImage('./assets/fonts/Iwallpaper.jpg');
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
   ctx.strokeStyle = '#74037b';
@@ -50,7 +50,7 @@
   ctx.closePath();
   ctx.clip();
 
-  const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
+  const avatar = Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
   ctx.drawImage(avatar, 25, 25, 200, 200);
 
   const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
