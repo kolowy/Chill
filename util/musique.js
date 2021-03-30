@@ -48,6 +48,39 @@ async function lyric(serverQueue){
 	return lyrics
 }
 
+async function playnotyt(guild, song, message) {
+    const serverQueue = queue.get(guild.id);
+    if (!song) {
+      serverQueue.voiceChannel.leave();
+      queue.delete(guild.id)
+      return;
+    }
+    console.log('cc4')
+    dispatcher = serverQueue.connection.play(song.url, { highWaterMark: 50 }).on('debug', console.log)
+      .on("finish", () => {
+        serverQueue.songs.shift();
+        play(guild, serverQueue.songs[0]);
+      })
+      .on("error", error => console.error(error));
+
+    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+    console.log('cc simon')
+
+    var t = song.duration
+    var s = Math.floor(t) % 60;
+    var m = Math.floor(t / 60) % 60;
+    var chaine = m+"m "+s + "s";
+    const embed = new MessageEmbed()
+        .setColor("#FF0000")
+        .setTitle('Play : ' + song.title)
+        .setDescription(song.description)
+	    .setThumbnail(song.thumbail)
+        .setURL(song.url)
+        .setFooter('Duration : ' + chaine)
+    serverQueue.textChannel.send(embed)
+};
+
+
 module.exports = {
     Queue: function Queue(message, song, connection) {
         const voiceChannel = message.member.voice.channel;
@@ -175,5 +208,37 @@ module.exports = {
 		    lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
 		return message.channel.send(lyricsEmbed).catch(console.error);
 	})
+    },
+	    radio: function radio(message, song, connection){
+        const voiceChannel = message.member.voice.channel;
+        const serverQueue = queue.get(message.guild.id);
+        if (serverQueue) {dispatcher.stop()}
+        const queueContruct = {
+            textChannel: message.channel,
+            voiceChannel: voiceChannel,
+            connection: null,
+            songs: [],
+            volume: 5,
+            playing: true
+        };
+        queue.set(message.guild.id, queueContruct);
+        queueContruct.songs.push(song);
+
+        try {
+            queueContruct.connection = connection;
+            playnotyt(message.guild, queueContruct.songs[0]);
+        } catch (err) {
+            console.log(err);
+            queue.delete(message.guild.id);
+        return 
+        }
+        serverQueue.songs.push(song);
+        const embed = new MessageEmbed()
+            .setColor("#FF0000")
+            .setTitle('Next Play : ' + song.title)
+            .setDescription(song.description)
+            .setThumbnail(song.thumbail)
+            .setURL(song.url)
+        return message.channel.send(embed).catch(console.error);
     },
 }
