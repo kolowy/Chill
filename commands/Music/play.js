@@ -42,12 +42,14 @@ async function execute(message) {
             console.log(n)
         }
         //NOTE video trouvé -> play + description
-        kolo = res.items[n].id.videoId;
+        kolo = res.items[n].id.videoId
         getytdl('https://www.youtube.com/watch?v=' + kolo).then(s => {
+		let descri = s.videoDetails.description
+		if(descri.length > 200) descri = descri.substring(0,200);
             const song = {
                 url: 'https://www.youtube.com/watch?v=' + kolo,
                 title: s.videoDetails.title,
-                description: s.videoDetails.description,
+                description: descri,
                 duration: s.videoDetails.lengthSeconds
             };
             Queue(message, song, connection)
