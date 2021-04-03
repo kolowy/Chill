@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
   name: "ping",
   aliases: ["pong"],
-  category: "misc",
+  category: "info",
   description: "Renvoit le ping du message et du serveur.",
   cooldown: 10,
   usage: "",

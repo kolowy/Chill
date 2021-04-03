@@ -35,7 +35,7 @@ module.exports.run = (client, message, args) => {
 module.exports.help = {
   name: "say",
   aliases: ["rep"],
-  category: "misc",
+  category: "info",
   description: "Répète votre texte.",
   cooldown: 10,
   usage: "<votre_message>",
