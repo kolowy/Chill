@@ -23,10 +23,10 @@ async function execute(message) {
   var connection = await voiceChannel.join();
 
   const song = {
-      url: 'https://radio.nationsglory.fr:8000/ngradio',
-      title: 'Radio NG',
-      description: 'ng radio',
-      duration: 00
+    url: 'https://radio.nationsglory.fr:8000/ngradio',
+    title: 'Radio NG',
+    description: 'ng radio',
+    duration: 00
   };
   radio(message, song, connection)
 }

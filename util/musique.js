@@ -55,7 +55,6 @@ async function playnotyt(guild, song, message) {
       queue.delete(guild.id)
       return;
     }
-    console.log('cc4')
     dispatcher = serverQueue.connection.play(song.url, { highWaterMark: 50 }).on('debug', console.log)
       .on("finish", () => {
         serverQueue.songs.shift();
@@ -64,8 +63,6 @@ async function playnotyt(guild, song, message) {
       .on("error", error => console.error(error));
 
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    console.log('cc simon')
-
     var t = song.duration
     var s = Math.floor(t) % 60;
     var m = Math.floor(t / 60) % 60;
@@ -144,12 +141,12 @@ module.exports = {
         const embed = new MessageEmbed()
             .setColor("#FF0000")
             .setTitle('**Resumed !**')
-	return message.channel.send(embed).catch(console.error);
+	    return message.channel.send(embed).catch(console.error);
     },
     stop: function stop(message){
         const serverQueue = queue.get(message.guild.id);
         if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
-        dispatcher.stop()
+        dispatcher.stop().catch(error)
         const embed = new MessageEmbed()
             .setColor("#FF0000")
             .setTitle('Stop !')
@@ -204,12 +201,12 @@ module.exports = {
 		    .setColor("#F8AA2A")
 		    .setTimestamp();
 
-		if (lyricsEmbed.description.length >= 2048)
-		    lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
-		return message.channel.send(lyricsEmbed).catch(console.error);
-	})
+            if (lyricsEmbed.description.length >= 2048)
+                lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
+            return message.channel.send(lyricsEmbed).catch(console.error);
+	    })
     },
-	    radio: function radio(message, song, connection){
+    radio: function radio(message, song, connection){
         const voiceChannel = message.member.voice.channel;
         const serverQueue = queue.get(message.guild.id);
         if (serverQueue) {dispatcher.stop()}
@@ -232,13 +229,5 @@ module.exports = {
             queue.delete(message.guild.id);
         return 
         }
-        serverQueue.songs.push(song);
-        const embed = new MessageEmbed()
-            .setColor("#FF0000")
-            .setTitle('Next Play : ' + song.title)
-            .setDescription(song.description)
-            .setThumbnail(song.thumbail)
-            .setURL(song.url)
-        return message.channel.send(embed).catch(console.error);
     },
 }
