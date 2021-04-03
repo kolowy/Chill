@@ -26,6 +26,8 @@ module.exports = async (client, message, member) => {
         { name: "Status", value: `${status}`, inline: true },
         { name: "Date", value: `${moment(client.user.onAt).utcOffset('+0100').format("DD/MM/YYYY à HH:mm")}`, inline: true },
         );
+console.log(client.api.applications(client.user.id).guilds('752812593961369641').commands.get())
+
     client.api.applications(client.user.id).guilds('752812593961369641').commands.post({
         data: {
             name: "ping",
@@ -46,6 +48,8 @@ module.exports = async (client, message, member) => {
             description: "lien d'invitation"
         }
     });
+
+
 
 
 

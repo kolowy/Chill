@@ -23,9 +23,9 @@ module.exports = async(client, message) => {
     }*/
     //Messages privés, renvoit à l'event directMessage
     if (message.channel.type === "dm") {
-        if (notAccess == true) {
+        //if (notAccess == true) {
             return client.emit("directMessage", message);
-        };
+        //};
     };
 
 

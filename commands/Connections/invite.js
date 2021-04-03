@@ -15,7 +15,7 @@ module.exports.help = {
   name: "invite",
   aliases: ["invitation"],
   category: "connections",
-  description: "Renvoit le lien d'dinvitation du BOT.",
+  description: "Renvoit le lien d'invitation du BOT.",
   cooldown: 10,
   usage: "",
   permissions: false,

@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args, level, settings) => {
     .setDescription(`**Action :** \`PURGE\`\n**Nbr de messages :** \`${args[0]}\`\n**Salon :** \`${message.channel}\``)
     .setTimestamp()
 
-  client.channels.cache.get(client.config.logChannel).send(embed)
+  client.channels.cache.get('822196582211518464').send(embed);
 };
 
 
