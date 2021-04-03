@@ -8,7 +8,6 @@ const { pause } = require("../../util/musique.js");
 module.exports.run = async(client, message, args) => {
     if (message.member.voice.channel) {
         pause(message)
-        message.channel.send('skip !')
         return;
     } else {
         message.channel.send("Vous n'etes pas dand un channel vocal ...").then(msg => { 
