@@ -21,19 +21,20 @@ module.exports.run = async (client, message, args) => {
       return message.channel.send(reportEmbed);
     }
     body = JSON.parse(body);
-    if(body.online == false){
+    console.log(body)
+    if(body.online == false || body.motd == '§4Server not found.'){
       const errorEmbed = new MessageEmbed()
         .setTitle("Error", message.guild.iconURL)
         .setDescription(" ")
-        .setColor(color)
+        .setColor('RED')
         .addField("Reason:", `Le serveur **${ip}** n'existe pas, reverifiez votre ip..."`)
         .setFooter("Minecraft",  "https://images.emojiterra.com/google/android-11/128px/1f50c.png")
         .setTimestamp()
       return message.channel.send(errorEmbed);
     } else {
-      if (body.online) {
+      if (body.online && body.server.name != '§4● Offline') {
         const errorEmbed = new MessageEmbed()
-          .setTitle("Error", message.guild.iconURL)
+          .setTitle("Minecraft", message.guild.iconURL)
           .setDescription(`Le serveur : **${ip}** est actuallement **online**.
           Le nombre de personnes connecté est de : **${body.players.now}**`)
           .setColor("GREEN")
@@ -42,7 +43,7 @@ module.exports.run = async (client, message, args) => {
         return message.channel.send(errorEmbed);
       } else {
         const errorEmbed = new MessageEmbed()
-          .setTitle("Error", message.guild.iconURL)
+          .setTitle("Minecraft", message.guild.iconURL)
           .setDescription(`Le serveur : **${ip}** est actuallement **offline**.`)
           .setColor(color)
           .setFooter("Minecraft",  "https://images.emojiterra.com/google/android-11/128px/1f50c.png")
