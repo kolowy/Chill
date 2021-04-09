@@ -15,7 +15,6 @@ async function play(guild, song, message) {
       return;
     }
     dispatcher = serverQueue.connection.play(await ytdl(song.url), { type: 'opus', filter : 'audioonly' , highWaterMark: 50 }).on('debug', console.log)
-
       .on("finish", () => {
         serverQueue.songs.shift();
         play(guild, serverQueue.songs[0]);
@@ -55,7 +54,7 @@ async function playnotyt(guild, song, message) {
       queue.delete(guild.id)
       return;
     }
-    dispatcher = serverQueue.connection.play(song.url, { highWaterMark: 50 }).on('debug', console.log)
+    dispatcher = serverQueue.connection.play(await song.url, { highWaterMark: 50 }).on('debug', console.log)
       .on("finish", () => {
         serverQueue.songs.shift();
         play(guild, serverQueue.songs[0]);
@@ -146,7 +145,7 @@ module.exports = {
     stop: function stop(message){
         const serverQueue = queue.get(message.guild.id);
         if (!serverQueue){return message.channel.send("Il n'y a aucune musique en cours !").catch(console.error);}
-        dispatcher.stop().catch(error)
+        dispatcher.destroy()
         const embed = new MessageEmbed()
             .setColor("#FF0000")
             .setTitle('Stop !')
@@ -209,7 +208,7 @@ module.exports = {
     radio: function radio(message, song, connection){
         const voiceChannel = message.member.voice.channel;
         const serverQueue = queue.get(message.guild.id);
-        if (serverQueue) {dispatcher.stop()}
+        if (serverQueue) {dispatcher.destroy()}
         const queueContruct = {
             textChannel: message.channel,
             voiceChannel: voiceChannel,

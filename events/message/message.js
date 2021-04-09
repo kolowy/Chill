@@ -88,7 +88,7 @@ module.exports = async(client, message) => {
             //Message d'attente du cooldown
             if (timeNow < cdExpirationTime) {
                 timeLeft = (cdExpirationTime - timeNow) / 1000
-                return client.channels.cache.get(client.config.cmdChannel).send(`${message.author}, merci d'attendre ${timeLeft.toFixed(0)} seconde(s) avant de ré-utiliser la commande \`${command.help.name}\` !`);
+                return message.channel.send(`${message.author}, merci d'attendre ${timeLeft.toFixed(0)} seconde(s) avant de ré-utiliser la commande \`${command.help.name}\` !`);
             };
         };
 
