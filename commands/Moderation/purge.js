@@ -1,47 +1,35 @@
 const { MessageEmbed } = require("discord.js");
-const color = "RED";
+const color = "BLUE";
 
-module.exports.run = async (client, message, args, level, settings) => {
+module.exports.run = async (client, message, args, settings) => {
+
   message.delete({ timeout: 1000 });
 
   //NOTE perms
-  if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply(`${message.author} - Vous devez avoir la permission **\`MANAGE_MESSAGES\`** pour utiliser la commande **\`purge\`**.`)
+  if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply(`- Vous devez avoir la permission **\`MANAGE_MESSAGES\`** pour utiliser la commande .**\`prune\`**`);
 
-	if (isNaN(args[0]) || (args[0] < 1 || args[0] > 100)) return message.reply("Il faut spécifier un **nombre** entre 1 et 100 !")
+  let user = message.guild.member(message.mentions.users.first());
+  if (isNaN(args[1]) || (args[1] < 1 || args[1] > 100)) return message.reply("Il faut spécifier un **nombre** entre 1 et 100 !")
   
-  const messages = await message.channel.messages.fetch({
-    limit: Math.min(args[0], 100),
+  //NOTE filtre des msgs
+  const messages = (await message.channel.messages.fetch({
+    limit: 100,
     before: message.id
-  });
-  
-  await message.channel.bulkDelete(messages).catch(err => {
-    message.channel.reply("Vous n'avez pas la permission suffisante pour supprimer ces messages.").then(msg => {
-      msg.delete({ timeout: 5000 });
-    });
-	});;
+  })).filter(a => a.author.id === user.id).array();
 
-	message.channel.send(`\`${args[0]}\` messages ont été supprimés !`).then(msg => {
-    msg.delete({ timeout: 10000 });
-  });
-
-  //TODO mettre via ddb logchannel
-  const embed = new MessageEmbed()
-    .setColor(color)
-    .setAuthor(`${message.author.username}\n(${message.author.id})`, message.author.avatarURL())
-    .setDescription(`**Action :** \`PURGE\`\n**Nbr de messages :** \`${args[0]}\`\n**Salon :** \`${message.channel}\``)
-    .setTimestamp()
-
-  client.channels.cache.get('822196582211518464').send(embed);
+  messages.length = Math.min(args[1], messages.length); 
+  if (messages.length === 0 || !user) return message.reply("Aucuns messages à supprimer pour cet utilisateur (ou celui-ci n'existe pas) !")
+  if (messages.length === 1) await messages[0].delete();
+  else await message.channel.bulkDelete(messages);
 };
 
-
 module.exports.help = {
-  name: "purge",
-  aliases: ["clear"],
+  name: "prune",
+  aliases: ["clearuser"],
   category: "moderation",
-  description: "Supprime un nombre de message spécifique.",
+  description: "Supprime un nombre de message spécifique d'un utilisateur.",
   cooldown: 10,
-  usage: "<nbr_msg>",
+  usage: "<@user> <nbr_msg>",
   permissions: false,
   args: true,
 }
