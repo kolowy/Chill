@@ -21,7 +21,6 @@ module.exports.run = async (client, message, args) => {
       return message.channel.send(reportEmbed);
     }
     body = JSON.parse(body);
-    console.log(body)
     if(body.online == false || body.motd == '§4Server not found.'){
       const errorEmbed = new MessageEmbed()
         .setTitle("Error", message.guild.iconURL)
