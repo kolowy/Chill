@@ -26,7 +26,7 @@ module.exports.run = async (client, message, args) => {
         .setTitle("Error", message.guild.iconURL)
         .setDescription(" ")
         .setColor('RED')
-        .addField("Reason:", `Le serveur **${ip}** n'existe pas, reverifiez votre ip..."`)
+        .addField("Reason:", `Le serveur **${ip}** n'existe pas, reverifiez votre ip...`)
         .setFooter("Minecraft",  "https://images.emojiterra.com/google/android-11/128px/1f50c.png")
         .setTimestamp()
       return message.channel.send(errorEmbed);
