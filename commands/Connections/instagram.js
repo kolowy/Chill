@@ -37,7 +37,17 @@ module.exports.run = async (bot, message, args) => {
     return
   }
   const account = res.graphql.user;
+  if(!account){
+    const embed = new MessageEmbed()
+    .setColor(color)
+    .setTitle("__Erreur__", message.guild.iconURL)
+    .setDescription(" ")
+    .addField("Raison:", "Je ne peux pas trouver cet utilisateur...\nCar il n'existe pas !")
+  .setFooter("Page d'info", "https://images.emojiterra.com/google/android-11/128px/2139.png")
+  .setTimestamp();
 
+  message.channel.send(embed);
+  }
   const embed = new MessageEmbed()
     .setColor(color)
     .setTitle(account.full_name)
@@ -45,7 +55,7 @@ module.exports.run = async (bot, message, args) => {
     .setThumbnail(account.profile_pic_url_hd)
     .addField("Profile information", stripIndents`**- Username :** ${account.username}
         - Full name: ${account.full_name}
-	- Private account: ${account.is_private ? "Yes 🔐" : "Nope 🔓"}
+	      - Private account: ${account.is_private ? "Yes 🔐" : "Nope 🔓"}
         - Biography: ${account.biography.length == 0 ? "none" : account.biography}
         - Posts: ${account.edge_owner_to_timeline_media.count}
         - Followers: ${account.edge_followed_by.count}
