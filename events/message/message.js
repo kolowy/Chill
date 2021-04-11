@@ -54,7 +54,7 @@ module.exports = async(client, message) => {
     //NOTE Permission : true
     if (notAccess == true) {
         if (command.help.permissions && !message.member.hasPermission('ADMINISTRATOR')) {
-            return message.guild.channels.cache.get(client.config.cmdChannel).send(`${message.author} - Tu dois être **\`ADMINISTRATEUR\`** du BOT pour faire la commande \`${command.help.name}\` !`);
+            return message.channel.send(`${message.author} - Tu dois être **\`ADMINISTRATEUR\`** du BOT pour faire la commande \`${command.help.name}\` !`);
         }
     };
 
