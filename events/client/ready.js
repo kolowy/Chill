@@ -4,6 +4,11 @@ const status = "online";
 const color = "GREEN";
 const {logManager} = require("../../log/index.js")
 var packageLoader_1 = require("../../packageLoader");
+const Topgg = require(`@top-gg/sdk`)
+
+const api = new Topgg.Api(process.env.TOPGG)
+
+
 
 module.exports = async (client, message, member) => {
     let activities = [`${client.config.PREFIX}help ⚙`, 'http://82.121.254.56:30/', 'BOT communautaire', `Observe les ${client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)} users`], i = 0;
@@ -16,6 +21,13 @@ module.exports = async (client, message, member) => {
             }
         }), 5000
     );
+	setInterval(() => {
+	  api.postStats({
+	    serverCount: client.guilds.cache.size,
+	    //shardId: client.shard.ids[0], // if you're sharding
+	    shardCount: client.options.shardCount
+	  })
+	}, 1800000)
 
     const start = new MessageEmbed()
         .setColor(color)

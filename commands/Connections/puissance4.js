@@ -2,34 +2,52 @@ const { MessageEmbed, GuildAuditLogsEntry} = require("discord.js");
 const emoji = require('../../util/emoji');
 const Playboard = require('../../util/Playboard');
 const Controller = require('../../util/Controller');
+const Topgg = require(`@top-gg/sdk`)
+
+const api = new Topgg.Api(process.env.TOPGG)
 
 module.exports.run = (client, message) => {
-    const mentionned = message.mentions.users.first();
-    let pl2 = ""
-    if (mentionned) {
-        const pl2 = message.mentions.users.first();
-        var pl1 = message.author
-    } else {
-      return message.reply("veuillez mentionner quelqu'un, l'IA n'est pas encore dev")
-    }
-    const embed = new MessageEmbed()
-        .setTitle(`Puissance 4`)
-        .setColor("BLUE")
-        .setDescription(pl2 + "réagissez s'il vous plait sous ce message pour commencer la partie" )
-    message.channel.send(embed).then(m => {
-        m.react('👍');
+    let userToken = AuthUser(message.author.id)    
+    userToken.then(function(result) {
+        if(result != true){
+            const embed = new MessageEmbed()
 
-        const Yes = (reaction, user) => reaction.emoji.name === '👍' && user.id === message.mentions.users.first().id;
-        const collectYes = m.createReactionCollector(Yes, { max: 20, time: 1 * 60 * 1000 }); // 1 min
-        collectYes.on('collect', () => {
-            m.reactions.removeAll().catch(error => "err");
-            collectYes.stop()
-            m.delete({ timeout: 1000 }).catch((error) => {
-                message.channel.send('I cannot delete message here')
-            });
-            const user = [message.author,message.mentions.users.first()]
-            starting(client, message, user)
-        });
+            .setColor("#FF0000")
+            .setTitle('Puissance 4')
+            .setDescription('Cette commande n\'est accessible que si vous votez \n Merci à vous !')
+            .setThumbnail(client.user.displayAvatarURL())
+            .addField('top.gg', 'https://top.gg/bot/752812712165376083/vote', true)
+            .setURL('https://top.gg/bot/752812712165376083/vote')
+            return message.reply(embed)
+        } else {
+            const mentionned = message.mentions.users.first();
+            let pl2 = ""
+            if (mentionned) {
+                const pl2 = message.mentions.users.first();
+                var pl1 = message.author
+            } else {
+              return message.reply("veuillez mentionner quelqu'un, l'IA n'est pas encore dev")
+            }
+            const embed = new MessageEmbed()
+                .setTitle(`Puissance 4`)
+                .setColor("BLUE")
+                .setDescription(pl2 + "réagissez s'il vous plait sous ce message pour commencer la partie" )
+            message.channel.send(embed).then(m => {
+                m.react('👍');
+        
+                const Yes = (reaction, user) => reaction.emoji.name === '👍' && user.id === message.mentions.users.first().id;
+                const collectYes = m.createReactionCollector(Yes, { max: 20, time: 1 * 60 * 1000 }); // 1 min
+                collectYes.on('collect', () => {
+                    m.reactions.removeAll().catch(error => "err");
+                    collectYes.stop()
+                    m.delete({ timeout: 1000 }).catch((error) => {
+                        message.channel.send('I cannot delete message here')
+                    });
+                    const user = [message.author,message.mentions.users.first()]
+                    starting(client, message, user)
+                });
+            })
+        }
     })
 };
 
@@ -80,4 +98,8 @@ async function starting(client, message, user){
         await controller.draw(message, msg, partie, emoji, controller, i);
         if(controller.win() == false){out = false; controller.playerwin(msg, partie, emoji, i)}
     }
+}
+
+let AuthUser = function(id) {
+    return api.hasVoted(id)
 }
