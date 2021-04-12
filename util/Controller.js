@@ -21,7 +21,6 @@ class Controller {
             .setTitle(`Puissance 4`)
             .setColor("BLUE")
             .setDescription("Au tour de **" + this.player.username +  "** \n\n" + text )
-            .setFooter(" " +emoji[1] + " " + emoji[2] + " " + emoji[3] + " " + emoji[4] + " " + emoji[5] + " " + emoji[6] + " " + emoji[7] + " ")
         msg.edit(embed);
         return msg.awaitReactions(filter, { max: 1 }).then(collected => {
             const reaction = collected.first();
