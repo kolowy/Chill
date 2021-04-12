@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
   name: "exit",
   aliases: ["éteindre"],
-  category: "admin",
+  category: "fondateur",
   description: "Éteint le bot",
   cooldown: 10,
   usage: "",

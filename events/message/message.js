@@ -46,6 +46,7 @@ module.exports = async(client, message) => {
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
     //NOTE Prefix
+	if (message.content === myPrefix) return;
     if (!command) {
         return message.channel.send(`${message.author} - La commande \`${commandName}\` n'existe pas !`);
     }

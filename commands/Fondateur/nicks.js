@@ -21,7 +21,7 @@ module.exports.run = (client, message, args, member) => {
 module.exports.help = {
     name: "nicks",
 	aliases: ["resetnicks"],
-	category: "admin",
+	category: "fondateur",
 	description: "Reset les pseudos de tous les joueurs sur le serveur.",
 	cooldown: 10,
 	usage: "",

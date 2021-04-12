@@ -57,7 +57,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
     name: "reload",
     aliases: ["rc"],
-    category: "admin",
+    category: "fondateur",
     description: "Actualise une cmd.",
     cooldown: 10,
     usage: "<command_name>",
