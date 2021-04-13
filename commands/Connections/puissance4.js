@@ -43,7 +43,10 @@ module.exports.run = (client, message) => {
                     m.delete({ timeout: 1000 }).catch((error) => {
                         message.channel.send('I cannot delete message here')
                     });
-                    const user = [message.author,message.mentions.users.first()]
+                    const user = {
+                        pl1: message.author,
+                        pl2: message.mentions.users.first()
+                    };
                     starting(client, message, user)
                 });
             })
@@ -76,8 +79,8 @@ async function starting(client, message, user){
         }
     };
     let out = true;
-    const controller = new Controller(client, emoji, user, out);
-    const partie = new Playboard(emoji);
+    const controller = new Controller(client, emoji, out);
+    const partie = new Playboard(emoji, user);
 
     var actualPlayer =0
     const embed = new MessageEmbed()
@@ -95,8 +98,8 @@ async function starting(client, message, user){
     let i = -1
     while (out == true) {
         i++
-        await controller.draw(message, msg, partie, emoji, controller, i);
-        if(controller.win() == false){out = false; controller.playerwin(msg, partie, emoji, i)}
+        await controller.draw(message, msg, partie, emoji, controller);
+        if(controller.win() == false){out = false; controller.playerwin(msg, partie, emoji, message)}
     }
 }
 

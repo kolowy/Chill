@@ -4,7 +4,7 @@ const Win = require('../commands/Connections/puissance4');
 
 class Playboard {
 
-    constructor(emoji) {
+    constructor(emoji, user) {
         this.colonnes = [
             new Colonne(),
             new Colonne(),
@@ -20,6 +20,11 @@ class Playboard {
             Emoji.circle.yellow
         ]
         this.actualEmoji = 0;
+        this.possibleUser = [
+            user.pl1,
+            user.pl2,
+        ]
+        this.user = 0
     }
 
     playAt(nbColonne, message, controller) {
@@ -71,10 +76,12 @@ class Playboard {
             }
             this.actualEmoji++;
             this.actualEmoji = this.actualEmoji %2;
+            this.user++;
+            this.user = this.user %2;
         } else {
-            message.channel.send("Colonne pleine").delete({ timeout: 1000 }).catch((error) => {
-                message.channel.send('I cannot delete message here')
-            });
+            message.channel.send("La colone est pleine, joue autre part !").then(msg => {
+                msg.delete({ timeout: 4000 })
+            })
         }
     }
 
@@ -93,6 +100,9 @@ class Playboard {
         //console.log(text);
 
         return text;
+    }
+    player(){
+        return this.possibleUser[this.user]
     }
 }
 

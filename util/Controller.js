@@ -2,29 +2,26 @@ const Discord = require('discord.js');
 const { MessageEmbed } = require('discord.js'); 
 let out = true
 //const emoji = require('./emoji');
-var actualPlayer =0
-let player = ""
 
 class Controller {
-    constructor(bot, emoji, user, out) {
+    constructor(bot, emoji, out) {
         this.bot = bot;
-        this.user = user
         this.out = out
     }
-    async draw(message, msg, partie, emoji, controller, i) {
-        this.player = this.user[i %2]
+    async draw(message, msg, partie, emoji, controller) {
         let text = partie.toString(emoji);
+        let player = partie.player()
         const filter = (reaction, user) => {
-            return emoji.all.includes(reaction.emoji.name) && (user.id == this.player);
+            return emoji.all.includes(reaction.emoji.name) && (user.id == player);
         }
         const embed = new MessageEmbed()
             .setTitle(`Puissance 4`)
             .setColor("BLUE")
-            .setDescription("Au tour de **" + this.player.username +  "** \n\n" + text )
+            .setDescription("Au tour de **" + player.username +  "** \n\n" + text )
         msg.edit(embed);
         return msg.awaitReactions(filter, { max: 1 }).then(collected => {
             const reaction = collected.first();
-            reaction.users.remove(this.player);
+            reaction.users.remove(player);
             switch (reaction.emoji.name) {
                 case emoji[1]:
                     return partie.playAt(1, message, controller);
@@ -55,15 +52,20 @@ class Controller {
     haswin(){
         this.out = false
     }
-    playerwin(msg, partie, emoji, i){
-        this.player = this.user[i %2]
+    playerwin(msg, partie, emoji, message){
+        player = partie.player()
         let text = partie.toString(emoji);
         msg.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
         const embed = new MessageEmbed()
             .setTitle(`Puissance 4`)
             .setColor("BLUE")
-            .setDescription("**" + this.player.username +  " a gagné !** \n\n" + text )
+            .setDescription("**" + player.username +  " a gagné !** \n\n" + text )
         msg.edit(embed);
+        const win = new MessageEmbed()
+            .setTitle(`Puissance 4`)
+            .setColor("BLUE")
+            .setDescription("**" + player.username +  " a gagné !** \n\n" )
+        message.channel.send(win);
     }
 }
 module.exports = Controller;
