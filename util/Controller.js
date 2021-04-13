@@ -53,7 +53,7 @@ class Controller {
         this.out = false
     }
     playerwin(msg, partie, emoji, message){
-        player = partie.player()
+        let player = partie.player()
         let text = partie.toString(emoji);
         msg.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
         const embed = new MessageEmbed()
