@@ -33,11 +33,17 @@ require('dotenv').config()
 const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 mongoose.set('useFindAndModify', false);
+const config = require("./config.js");
 
 var context = {
-    client: new Discord.Client(),
+    client: new new Client({
+        intents: config.intents,
+        partials: config.partials
+      }),
     pkg: packageLoader_1.pkg
 };
+
+context.client.config = config;
 
 logManager('connect db',1);
 //Connect to mongoose database
@@ -85,7 +91,6 @@ process.on('SIGINT', function() {
 
 //NOTE log au serveur
 context.client.login(process.env.TOKEN);
-context.client.config = require("./config");
 ["commands", "cooldowns"].forEach(x => context.client[x] = new Collection());
 
 loadCommands(context.client);
