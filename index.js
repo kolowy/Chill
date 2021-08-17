@@ -36,7 +36,7 @@ mongoose.set('useFindAndModify', false);
 const config = require("./config.js");
 
 var context = {
-    client: new new Client({
+    client: new Client({
         intents: config.intents,
         partials: config.partials
       }),
