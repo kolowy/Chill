@@ -27,7 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { logManager } = require("./log/index.js");
 var packageLoader_1 = require("./packageLoader");
 const { loadCommands, loadEvents } = require("./util/loader");
-const { Collection } = require("discord.js");
+const { Collection, Client } = require("discord.js");
 var Discord = __importStar(require("discord.js"));
 require('dotenv').config()
 const mongoose = require("mongoose");
